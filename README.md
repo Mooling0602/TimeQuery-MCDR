@@ -19,7 +19,7 @@ locale仅支持配置为zh（简中）和en（英文），若设置为其他项�
 
 # 指令冲突问题
 同时注册了!!time_query:time等效于!!time，若发生冲突可使用这个带上了前缀的指令
-无法完全解决指令冲突问题，你真的想知道为什么的话，可查看[提示]()
+无法完全解决指令冲突问题，你真的想知道为什么的话，可查看[提示](https://github.com/Mooling0602/TimeQuery-MCDR/blob/main/time_query/tip.txt)
 
 
 # 其他
