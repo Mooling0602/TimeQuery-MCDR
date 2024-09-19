@@ -2,14 +2,12 @@ import arrow
 
 from typing import Optional
 from mcdreforged.api.all import *
-from time_query.weekday_formatter import zh_formatter
 
 currentTimeGetter = arrow.now()
 currentTZname = currentTimeGetter.tzname()
 weekdayRaw = currentTimeGetter.format("d")
-weekday_zh = zh_formatter(weekdayRaw)
 currentTimeRaw = currentTimeGetter.format(f"YYYY-MM-DD {weekdayRaw} HH:mm:ss")
-currentTime_zh = currentTimeGetter.format(f"YYYY年MM月DD日 {weekday_zh} HH时mm分ss秒")
+currentTime_zh = currentTimeGetter.format(f"YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh')
 currentTime_en = currentTimeGetter.format(f"MMMM D, YYYY dddd HH:mm:ss")
 prefixReal_zh = "[现实时间]"
 prefixReal_en = "[Real Time]"
