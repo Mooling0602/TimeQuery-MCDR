@@ -3,12 +3,6 @@ import arrow
 from typing import Optional
 from mcdreforged.api.all import *
 
-currentTimeGetter = arrow.now()
-currentTZname = currentTimeGetter.tzname()
-weekdayRaw = currentTimeGetter.format("d")
-currentTimeRaw = currentTimeGetter.format(f"YYYY-MM-DD {weekdayRaw} HH:mm:ss")
-currentTime_zh = currentTimeGetter.format(f"YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh')
-currentTime_en = currentTimeGetter.format(f"MMMM D, YYYY dddd HH:mm:ss")
 prefixReal_zh = "[现实时间]"
 prefixReal_en = "[Real Time]"
 prefixGame_zh = "[游戏内时间]"
@@ -67,14 +61,14 @@ def getTime():
 def getRealTime():
     global locale
     if locale == "":
-        return currentTimeRaw + " " + currentTZname
+        return arrow.now().format("YYYY-MM-DD" + arrow.now().format("d") + "HH:mm:ss") + " " + arrow.now().tzname()
     elif locale == "zh":
-        if currentTZname == "CST":
-            return currentTime_zh + " " + "中国标准时间"
+        if arrow.now().tzname() == "CST":
+            return arrow.now().format("YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh') + " " + "中国标准时间"
         else:
-            return currentTime_zh + " " + currentTZname
+            return arrow.now().format("YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh') + " " + arrow.now().tzname()
     elif locale == "en":
-        return currentTime_en + " " + currentTZname
+        return arrow.now().format("MMMM D, YYYY dddd HH:mm:ss") + " " + arrow.now().tzname()
     elif locale is None:
         return "Error: config option lost."
     else:
