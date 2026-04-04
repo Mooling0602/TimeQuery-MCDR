@@ -1,32 +1,33 @@
 # TimeQuery-MCDR
 A MCDR(full name "MCDReforged") plugin use to query the time in real and game.
 
-README will written only by zh_CN, you can translate it yourself.
+README will written only by zh_CN, you can translate it with AI tools.
+
+> Since Minecraft 26.1, the usage of `/time` has changed, and newer version of this plugin will support it.
 
 # 用途
 查询现实和游戏内的时间，以24小时制显示。
 
+> 自Minecraft 26.1以后，`/time`的用法发生了改变，插件的新版本将支持这一改变。
+
 # 配置
 修改config/time_query/config.json中的locale项为zh
 
-English users set "locale" option in config/time_query/config.json to "en".
+English users set "locale" option in `config/time_query/config.json` to "en".
 
 若不进行配置，显示的内容将缺少部分信息和本地化格式
 
 locale仅支持配置为zh（简中）和en（英文），若设置为其他项将发生报错
 
 # 用法
-`!!time` - 查询现实和游戏内（尚未实现）的时间，并分别显示
+`!!time` - 查询现实和游戏内的时间，并分别显示
 
 `!!time real` - 仅查询现实的时间，显示年月日、星期几、具体时间（精确到秒）
 
-`!!time game` - 仅查询游戏内的时间，对应现实24小时制精确到分（尚未实现，后续将更新，有需要直接去装MCDR插件仓库里的Daytime）
+`!!time game` - 仅查询游戏内的时间，对应现实24小时制精确到分（需要Rcon支持，若无法使用Rcon环境且游戏版本在26.1以前，可以尝试插件仓库中的Daytime插件）
 
 # 指令冲突问题
 同时注册了`!!time_query:time`等效于`!!time`，若发生冲突可使用这个带上了前缀的指令
 
-> 无法完全解决指令冲突问题，你真的想知道为什么的话，可查看[提示](https://github.com/Mooling0602/TimeQuery-MCDR/blob/main/time_query/tip.txt)
+你也可以在插件配置中，修改指令别名，或使用命名空间前缀作为默认值。
 
-
-# 其他
-MCDR插件仓库中有个能查询游戏时间的，但是没有能查现实时间的，于是自己做（shui）一个出来。

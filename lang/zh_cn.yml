@@ -1,0 +1,13 @@
+time_query:
+  prefix:
+    real_time: "[现实时间]"
+    game_time: "[游戏内时间]"
+    time_format: "HH:mm:ss"
+    date_format: "YYYY年MM月DD日 dddd"
+  return_default_ver_mode: "无法识别服务端游戏版本，将使用旧的命令识别模式。"
+  plugin_loaded: "插件TimeQuery（时间查询）已加载完成！"
+  i18n_modify_tip: "插件的部分提示内容可以通过修改语言文件来定制，如有需要，可以在主配置中关闭`i18n_lock`选项使插件将语言文件解压到配置目录下的'lang'文件夹中。"
+  i18n_finish: "所有翻译条目加载完成！"
+  require_console_permission: "此命令需在控制台下执行！"
+  please_confirm_option: "请再次确认（重新执行相同命令）！"
+  config_reset_success: "插件配置已重置！"

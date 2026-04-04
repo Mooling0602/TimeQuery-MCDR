@@ -1,78 +1,44 @@
-import arrow
+import time_query.runtime as rt
 
-from typing import Optional
-from mcdreforged.api.all import *
+from pathlib import Path
+from mcdreforged.api.all import PluginServerInterface
+from time_query.config import DefaultConfig, SupportedLanguages, resource_extractor, tr
+from time_query.command import command_register
 
-prefixReal_zh = "[现实时间]"
-prefixReal_en = "[Real Time]"
-prefixGame_zh = "[游戏内时间]"
-prefixGame_en = "[Game Time]"
 
-psi = ServerInterface.psi()
+def load_i18n(s: PluginServerInterface, lang_dir: Path):
+    for i in SupportedLanguages:
+        _f = f"{i}.yml"
+        file = Path("lang") / _f
+        file_target = lang_dir / _f
+        if not file_target.exists():
+            resource_extractor(s, file, file_target)
+            break
+        lang_map = s.load_config_simple(str(file), echo_in_console=False)
+        if isinstance(lang_map, dict):
+            s.logger.info(f"Registering i18n for plugin time_query: '{i}'")
+            s.register_translation(i, lang_map)
 
-default_config = {
-    "locale": ""
-}
 
-config = psi.load_config_simple("config.json", default_config)
-locale = None
-
-def build_command(maincmd: Optional[str] = "time"):
-    psi.register_command(
-        Literal(f"!!{maincmd}")
-        .runs(
-            lambda src: src.reply(getTime())
-        )
-        .then(
-            Literal("real")
-            .runs(
-                lambda src: src.reply(getRealTime())
-            )
-        )
-        .then(
-            Literal("game")
-            .runs(
-                lambda src: src.reply(getGameTime())
-            )
-        )
-    )
-
-def on_load(server: PluginServerInterface, old):
-    global config, locale
-    server.logger.info("Loading TimeQuery.")
-    locale = config.get("locale", None)
-    build_command()
-    # Add prefix as an aliase command to avoid conflict. 
-    build_command("time_query:time")
-    server.logger.info("Commands registered.")
-
-def getTime():
-    if locale == "":
-        return getRealTime() + "\n" + getGameTime()
-    elif locale == "zh":
-        return prefixReal_zh + getRealTime() + "\n" + prefixGame_zh + getGameTime()
-    elif locale == "en":
-        return prefixReal_en + getRealTime() + "\n" + prefixGame_en + getGameTime()
-    elif locale is None:
-        return "Error: config option lost."
+def on_load(s: PluginServerInterface, old):
+    first_load: bool = False
+    config_fp = Path(s.get_data_folder()) / "config.yml"
+    if not config_fp.exists():
+        first_load = True
+    rt.config = s.load_config_simple("config.yml", target_class=DefaultConfig)  # ty: ignore[invalid-assignment]
+    config_dir = s.get_data_folder()
+    lang_dir = Path(config_dir) / "lang"
+    if not lang_dir.is_dir():
+        lang_dir.mkdir(exist_ok=True)
+    if not rt.config.i18n_lock:
+        load_i18n(s, lang_dir)
     else:
-        return "Error: not support this locale"
+        if first_load:
+            s.logger.info(tr(s, "i18n_modify_tip"))
+    s.logger.info(tr(s, "i18n_finish"))
+    command_register(s)
+    s.logger.info(tr(s, "plugin_loaded"))
 
-def getRealTime():
-    global locale
-    if locale == "":
-        return arrow.now().format("YYYY-MM-DD" + arrow.now().format("d") + "HH:mm:ss") + " " + arrow.now().tzname()
-    elif locale == "zh":
-        if arrow.now().tzname() == "CST":
-            return arrow.now().format("YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh') + " " + "中国标准时间"
-        else:
-            return arrow.now().format("YYYY年MM月DD日 dddd HH时mm分ss秒", locale='zh') + " " + arrow.now().tzname()
-    elif locale == "en":
-        return arrow.now().format("MMMM D, YYYY dddd HH:mm:ss") + " " + arrow.now().tzname()
-    elif locale is None:
-        return "Error: config option lost."
-    else:
-        return "Error: not support this locale."
 
-def getGameTime():
-    return "null"
+def on_server_startup(s: PluginServerInterface):
+    pass

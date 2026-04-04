@@ -1,0 +1,13 @@
+time_query:
+  prefix:
+    real_time: "[Real Time]"
+    game_time: "[In-game Time]"
+    time_format: "HH:mm:ss"
+    date_format: "MM/DD/YYYY dddd"
+  return_default_ver_mode: "Unable to recognize the server game version; using legacy command parsing mode."
+  plugin_loaded: "Plugin TimeQuery has been loaded!"
+  i18n_modify_tip: "Some plugin prompt texts can be customized by editing language files. If needed, disable `i18n_lock` in the main config so the plugin extracts language files into the 'lang' folder under the config directory."
+  i18n_finish: "All translation entries have been loaded!"
+  require_console_permission: "This command must be executed in the console!"
+  please_confirm_option: "Please confirm again (run the same command again)!"
+  config_reset_success: "Plugin configuration has been reset!"

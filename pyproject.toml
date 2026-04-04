@@ -1,0 +1,12 @@
+[project]
+name = "time_query"
+version = "0.0.9"
+description = "Query the time in real time and in the game."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "arrow>=1.4.0",
+  "mcdreforged>=2.1.0",
+  "packaging>=26.0",
+  "tzlocal>=5.3.1",
+]
