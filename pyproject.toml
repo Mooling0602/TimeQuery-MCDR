@@ -6,7 +6,15 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
   "arrow>=1.4.0",
-  "mcdreforged>=2.1.0",
+  "mcdreforged>=2.14.1",
   "packaging>=26.0",
   "tzlocal>=5.3.1",
 ]
+
+[dependency-groups]
+optional = [
+    "moolings-rcon-api",
+]
+
+[tool.uv.sources]
+moolings-rcon-api = { git = "https://github.com/Mooling0602/MoolingsRconAPI-MCDR.git" }

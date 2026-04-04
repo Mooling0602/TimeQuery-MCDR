@@ -16,14 +16,16 @@ README will written only by zh_CN, you can translate it with AI tools.
 如果需要修改插件翻译，请关闭`i18n_lock`项。
 
 # 用法
-`!!time` - 查询现实和游戏内的时间，并分别显示
+`!!time` - 显示插件命令用法
 
-`!!time real` - 仅查询现实的时间，显示年月日、星期几、具体时间（精确到秒）
+`!!time real` - 查询现实的时间，显示年月日、星期几、具体时间（精确到秒）
 
-`!!time game` - 仅查询游戏内的时间，对应现实24小时制精确到分（需要Rcon支持，若无法使用Rcon环境且游戏版本在26.1以前，可以尝试插件仓库中的Daytime插件）
+`!!time game` - 查询游戏内的时间，对应现实24小时制精确到分（需要Rcon支持，若无法使用Rcon环境且游戏版本在26.1以前，可以尝试插件仓库中的Daytime插件）
+
+# TODO
+- [ ] 支持在actionbar（物品栏上方）持续显示时间信息
 
 # 指令冲突问题
-同时注册了`!!time_query:time`等效于`!!time`，若发生冲突可使用这个带上了前缀的指令
+若发生命令冲突的情况，可以修改配置中的`command.enable_namespace`项，插件会将原先的`!!time`命令注册为`!!time_query:time`以规避冲突
 
-你也可以在插件配置中，修改指令别名，或使用命名空间前缀作为默认值。
-
+同时推荐安装[Command Aliases](https://mcdreforged.com/plugin/command_aliases)插件为插件命令设置别名，方便使用。

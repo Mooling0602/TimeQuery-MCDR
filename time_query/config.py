@@ -1,14 +1,22 @@
+import re
+from enum import Enum
 from pathlib import Path
-from packaging import version
 from typing import Literal
+
 from mcdreforged.api.all import (
-    Serializable,
     PluginServerInterface,
     RTextMCDRTranslation,
+    Serializable,
 )
+from packaging import version
+from packaging.version import InvalidVersion
 
-MCVersionMode = Literal["26.x", "1.x"]
 SupportedLanguages: list[str] = ["zh_cn", "en_us"]
+
+
+class MCVersionMode(Enum):
+    V1_x = "1.x"
+    V26_x = "26.x"
 
 
 class RconSettings(Serializable):
@@ -31,17 +39,31 @@ class DefaultConfig(Serializable):
 
 
 def is_version_ge(ver: str, target: str) -> bool:
-    return version.parse(ver) >= version.parse(target)
+    def _clean(v: str) -> str | None:
+        match = re.search(r"(\d+(\.\d+)*)", v)
+        return match.group(1) if match else None
+
+    def _get_result(v: str) -> bool:
+        return version.parse(v) >= version.parse(target)
+
+    try:
+        return _get_result(ver)
+    except InvalidVersion:
+        _ver = _clean(ver)
+        if _ver is not None:
+            return _get_result(_ver)
+        else:
+            raise
 
 
 def check_server_version(s: PluginServerInterface) -> MCVersionMode:
     version = s.get_server_information().version
     if version:
         if is_version_ge(version, "26"):
-            return "26.x"
+            return MCVersionMode.V26_x
     else:
         s.logger.warning(tr(s, "return_default_ver_mode"))
-    return "1.x"
+    return MCVersionMode.V1_x
 
 
 def resource_extractor(

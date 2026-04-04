@@ -1,7 +1,9 @@
 time_query:
+  _tr_version: "0.1.0" # do not change this!
   prefix:
     real_time: "[Real Time]"
     game_time: "[In-game Time]"
+    game_time_format: "h:m" # 'h' is how many hours, 'm' is how many minutes
     time_format: "HH:mm:ss"
     date_format: "MM/DD/YYYY dddd"
   return_default_ver_mode: "Unable to recognize the server game version; using legacy command parsing mode."

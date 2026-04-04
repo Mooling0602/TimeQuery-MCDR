@@ -1,8 +1,10 @@
 time_query:
+  _tr_version: "0.1.0" # 请不要修改此项！
   prefix:
     real_time: "[现实时间]"
     game_time: "[游戏内时间]"
-    time_format: "HH:mm:ss"
+    game_time_format: "h时m分" # h和m为占位符，代表具体数值
+    time_format: "HH时mm分ss秒"
     date_format: "YYYY年MM月DD日 dddd"
   return_default_ver_mode: "无法识别服务端游戏版本，将使用旧的命令识别模式。"
   plugin_loaded: "插件TimeQuery（时间查询）已加载完成！"

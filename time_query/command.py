@@ -1,14 +1,15 @@
 from pathlib import Path
-import time_query.runtime as rt
 
 from mcdreforged.api.all import (
+    CommandContext,
+    CommandSource,
     PluginServerInterface,
     SimpleCommandBuilder,
-    CommandSource,
-    CommandContext,
 )
+
+import time_query.runtime as rt
 from time_query.config import PluginCommand, tr
-from time_query.query import RealTimeQueryer
+from time_query.query import InGameTimeQueryer, RealTimeQueryer
 
 default_command_set = PluginCommand()
 builder = SimpleCommandBuilder()
@@ -26,8 +27,9 @@ def command_register(s: PluginServerInterface):
 
 
 @builder.command(f"{_cmd_pfx}{_cmd_root_node}")
+@builder.command(f"{_cmd_pfx}{_cmd_root_node} help")
 async def on_main_command(src: CommandSource):
-    src.reply("Usage: !!time [real]")
+    src.reply("Usage: !!time real|game")
 
 
 def _require_console(src: CommandSource) -> bool:
@@ -45,10 +47,25 @@ async def on_get_real_time(src: CommandSource):
     src.reply(queryer.get_complete_time(lang, timezone))
 
 
+@builder.command(f"{_cmd_pfx}{_cmd_root_node} game")
+async def on_get_in_game_time(src: CommandSource):
+    s = src.get_server().psi()
+    queryer = InGameTimeQueryer(s)
+    time_readable = await queryer.get_time(rt.mc_version)
+    src.reply(time_readable)
+
+
 @builder.command(f"{_cmd_pfx}time_query:debug config")
 async def on_debug_config(src: CommandSource):
     src.reply("Plugin configuration:")
     src.reply(str(rt.config))
+
+
+@builder.command(f"{_cmd_pfx}time_query:debug mc_ver")
+async def on_debug_mc_version(src: CommandSource):
+    s = src.get_server().psi()
+    src.reply(f"Parse in-game time mode: {rt.mc_version}")
+    src.reply(f"Minecraft server version: {s.get_server_information().version}")
 
 
 @builder.command(f"{_cmd_pfx}time_query:config reset")

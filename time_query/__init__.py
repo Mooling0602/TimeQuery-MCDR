@@ -1,9 +1,16 @@
-import time_query.runtime as rt
-
 from pathlib import Path
+
 from mcdreforged.api.all import PluginServerInterface
-from time_query.config import DefaultConfig, SupportedLanguages, resource_extractor, tr
+
+import time_query.runtime as rt
 from time_query.command import command_register
+from time_query.config import (
+    DefaultConfig,
+    SupportedLanguages,
+    check_server_version,
+    resource_extractor,
+    tr,
+)
 
 
 def load_i18n(s: PluginServerInterface, lang_dir: Path):
@@ -37,8 +44,12 @@ def on_load(s: PluginServerInterface, old):
             s.logger.info(tr(s, "i18n_modify_tip"))
     s.logger.info(tr(s, "i18n_finish"))
     command_register(s)
+    if not rt.rcon_api:
+        rt.rcon_api = s.get_plugin_instance("moolings_rcon_api")
     s.logger.info(tr(s, "plugin_loaded"))
+    if s.is_server_startup():
+        on_server_startup(s)
 
 
 def on_server_startup(s: PluginServerInterface):
-    pass
+    rt.mc_version = check_server_version(s)
