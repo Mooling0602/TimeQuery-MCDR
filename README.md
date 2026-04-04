@@ -11,13 +11,9 @@ README will written only by zh_CN, you can translate it with AI tools.
 > 自Minecraft 26.1以后，`/time`的用法发生了改变，插件的新版本将支持这一改变。
 
 # 配置
-修改config/time_query/config.json中的locale项为zh
+插件主配置在"config/time_query/config.yml"。
 
-English users set "locale" option in `config/time_query/config.json` to "en".
-
-若不进行配置，显示的内容将缺少部分信息和本地化格式
-
-locale仅支持配置为zh（简中）和en（英文），若设置为其他项将发生报错
+如果需要修改插件翻译，请关闭`i18n_lock`项。
 
 # 用法
 `!!time` - 查询现实和游戏内的时间，并分别显示
