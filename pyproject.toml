@@ -1,6 +1,6 @@
 [project]
 name = "time_query"
-version = "0.0.9"
+version = "0.1.0"
 description = "Query the time in real time and in the game."
 readme = "README.md"
 requires-python = ">=3.12"

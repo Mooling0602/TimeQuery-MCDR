@@ -1,6 +1,6 @@
 {
   "id": "time_query",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "name": "TimeQuery",
   "description": {
     "en_us": "Query the time in real time and in the game.",
