@@ -1,6 +1,6 @@
 [project]
 name = "time_query"
-version = "0.1.0"
+version = "0.1.1"
 description = "Query the time in real time and in the game."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -12,9 +12,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-optional = [
-    "moolings-rcon-api",
-]
+optional = ["moolings-rcon-api"]
 
 [tool.uv.sources]
 moolings-rcon-api = { git = "https://github.com/Mooling0602/MoolingsRconAPI-MCDR.git" }
