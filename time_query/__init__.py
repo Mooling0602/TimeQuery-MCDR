@@ -3,7 +3,6 @@ from pathlib import Path
 from mcdreforged.api.all import PluginServerInterface
 
 import time_query.runtime as rt
-from time_query.command import command_register
 from time_query.config import (
     DefaultConfig,
     SupportedLanguages,
@@ -43,7 +42,9 @@ def on_load(s: PluginServerInterface, old):
         if first_load:
             s.logger.info(tr(s, "i18n_modify_tip"))
     s.logger.info(tr(s, "i18n_finish"))
-    command_register(s)
+    import time_query.command as _cmd  # lazy import to setup variables
+
+    _cmd.command_register(s)
     if not rt.rcon_api:
         rt.rcon_api = s.get_plugin_instance("moolings_rcon_api")
     s.logger.info(tr(s, "plugin_loaded"))

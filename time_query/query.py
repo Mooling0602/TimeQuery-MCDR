@@ -78,7 +78,7 @@ class InGameTimeQueryer:
                 pattern = r"^Timeline [a-z0-9_]+:[a-z0-9_]+ is at (\d+) tick\(s\)$"
                 if match_obj := re.match(pattern, command_reply):
                     return int(match_obj.group(1))
-            case MCVersionMode.V26_x:
+            case MCVersionMode.V1_x:
                 pattern = r"^The\s+time\s+is\s+(\d+)$"
                 if match_obj := re.match(pattern, command_reply):
                     return int(match_obj.group(1))
@@ -103,7 +103,7 @@ class InGameTimeQueryer:
             raise RuntimeError("Failed to get time from rcon.")
         else:
             result = self._parser(command_reply, mode)
-            if result:
+            if result is not None:
                 return result
             raise TypeError(f"Failed to parse command reply: {result}")
 

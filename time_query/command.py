@@ -8,26 +8,24 @@ from mcdreforged.api.all import (
 )
 
 import time_query.runtime as rt
-from time_query.config import PluginCommand, tr
+from time_query.config import tr
 from time_query.query import InGameTimeQueryer, RealTimeQueryer
 
-default_command_set = PluginCommand()
 builder = SimpleCommandBuilder()
 queryer = RealTimeQueryer()
-_cmd_pfx: str = default_command_set.pfx
-_cmd_root_node: str = default_command_set.root_node
 _cmd_control_config_reset: bool = False
 
 
 def command_register(s: PluginServerInterface):
-    global _cmd_root_node
     if rt.config.command.enable_namespace:
-        _cmd_root_node = s.get_self_metadata().id + ":" + _cmd_root_node
+        rt.config.command.root_node = (
+            s.get_self_metadata().id + ":" + rt.config.command.root_node
+        )
     builder.register(s)
 
 
-@builder.command(f"{_cmd_pfx}{_cmd_root_node}")
-@builder.command(f"{_cmd_pfx}{_cmd_root_node} help")
+@builder.command(f"{rt.config.command.pfx}{rt.config.command.root_node}")
+@builder.command(f"{rt.config.command.pfx}{rt.config.command.root_node} help")
 async def on_main_command(src: CommandSource):
     src.reply("Usage: !!time real|game")
 
@@ -40,14 +38,14 @@ def _require_console(src: CommandSource) -> bool:
     return False
 
 
-@builder.command(f"{_cmd_pfx}{_cmd_root_node} real")
+@builder.command(f"{rt.config.command.pfx}{rt.config.command.root_node} real")
 async def on_get_real_time(src: CommandSource):
     lang = queryer.get_locale_supported(queryer.get_locale())
     timezone = queryer.get_time_zone()
     src.reply(queryer.get_complete_time(lang, timezone))
 
 
-@builder.command(f"{_cmd_pfx}{_cmd_root_node} game")
+@builder.command(f"{rt.config.command.pfx}{rt.config.command.root_node} game")
 async def on_get_in_game_time(src: CommandSource):
     s = src.get_server().psi()
     queryer = InGameTimeQueryer(s)
@@ -55,21 +53,21 @@ async def on_get_in_game_time(src: CommandSource):
     src.reply(time_readable)
 
 
-@builder.command(f"{_cmd_pfx}time_query:debug config")
+@builder.command(f"{rt.config.command.pfx}time_query:debug config")
 async def on_debug_config(src: CommandSource):
     src.reply("Plugin configuration:")
     src.reply(str(rt.config))
 
 
-@builder.command(f"{_cmd_pfx}time_query:debug mc_ver")
+@builder.command(f"{rt.config.command.pfx}time_query:debug mc_ver")
 async def on_debug_mc_version(src: CommandSource):
     s = src.get_server().psi()
     src.reply(f"Parse in-game time mode: {rt.mc_version}")
     src.reply(f"Minecraft server version: {s.get_server_information().version}")
 
 
-@builder.command(f"{_cmd_pfx}time_query:config reset")
-@builder.command(f"{_cmd_pfx}time_query:config reset --confirm")
+@builder.command(f"{rt.config.command.pfx}time_query:config reset")
+@builder.command(f"{rt.config.command.pfx}time_query:config reset --confirm")
 async def on_reset_config(src: CommandSource, ctx: CommandContext):
     s = src.get_server().psi()
     global _cmd_control_config_reset
@@ -85,8 +83,8 @@ async def on_reset_config(src: CommandSource, ctx: CommandContext):
         _cmd_control_config_reset = True
 
 
-@builder.command(f"{_cmd_pfx}time_query:helper update_i18n")
-@builder.command(f"{_cmd_pfx}time_query:helper update_i18n --reload")
+@builder.command(f"{rt.config.command.pfx}time_query:helper update_i18n")
+@builder.command(f"{rt.config.command.pfx}time_query:helper update_i18n --reload")
 def on_update_i18n(src: CommandSource, ctx: CommandContext):
     s = src.get_server().psi()
     if _require_console(src):
@@ -107,13 +105,13 @@ def on_update_i18n(src: CommandSource, ctx: CommandContext):
     else:
         src.reply("Updated i18n, please reload this plugin first.")
         src.reply(
-            f"Old *.bak files will block update, please sync your modifications first, then execute command `{_cmd_pfx}time_query:helper rmcache_i18n` in console to unblock."
+            f"Old *.bak files will block update, please sync your modifications first, then execute command `{rt.config.command.pfx}time_query:helper rmcache_i18n` in console to unblock."
         )
 
 
-@builder.command(f"{_cmd_pfx}time_query:helper rmcache_i18n")
-@builder.command(f"{_cmd_pfx}time_query:helper rmcache_i18n --confirm")
-@builder.command(f"{_cmd_pfx}time_query:helper rmcache_i18n --update")
+@builder.command(f"{rt.config.command.pfx}time_query:helper rmcache_i18n")
+@builder.command(f"{rt.config.command.pfx}time_query:helper rmcache_i18n --confirm")
+@builder.command(f"{rt.config.command.pfx}time_query:helper rmcache_i18n --update")
 def on_rmcache_i18n(src: CommandSource, ctx: CommandContext):
     s = src.get_server().psi()
     src.reply(
