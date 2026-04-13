@@ -1,6 +1,6 @@
 {
   "id": "time_query",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "name": "TimeQuery",
   "description": {
     "en_us": "Query the time in real time and in the game.",
@@ -10,6 +10,9 @@
     "mcdreforged": ">=2.14.1",
     "python": ">=3.12"
   },
+  "resources": [
+    "lang"
+  ],
   "author": "Mooling0602",
   "link": "https://github.com/Mooling0602/TimeQuery-MCDR"
 }
