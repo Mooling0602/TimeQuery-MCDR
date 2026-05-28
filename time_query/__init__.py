@@ -26,7 +26,7 @@ def load_i18n(s: PluginServerInterface, lang_dir: Path):
             s.register_translation(i, lang_map)
 
 
-def on_load(s: PluginServerInterface, old):
+def on_load(s: PluginServerInterface, _):
     first_load: bool = False
     config_fp = Path(s.get_data_folder()) / "config.yml"
     if not config_fp.exists():
